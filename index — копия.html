@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Ride-sharing">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Ridy">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <title>Ridy</title>
+  <link rel="manifest" href="manifest.json">
+ 
+ <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
+<div id="osm-map">
+	</div>
+ 
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    const serviceWorkerVersion = "3060947377";
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+
+  
+</head>
+
+<body>
+
+
+<script>
+  // Where you want to render the map.
+var element = document.getElementById('osm-map');
+
+// Height has to be set. You can do this in CSS too.
+element.style = 'height:100vh;';
+
+// Create Leaflet map on map element.
+var map = L.map(element);
+
+// Add OSM tile layer to the Leaflet map.
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+// Target's GPS coordinates.
+var target = L.latLng('55.0422', '58.9719');
+
+// Set map's center to target with zoom 14.
+map.setView(target, 14);
+
+// Place a marker on the same location.
+L.marker(target).addTo(map);
+
+  var imageUrl = 'Animation1-ezgif.com-speed.gif';
+         var imageBounds = [[55.0332, 58.9719], [55.0340, 58.9919]];
+         var overlay = L.imageOverlay(imageUrl, imageBounds);
+         overlay.addTo(map);
+
+</script>
+<!-- <style> tag -->
+  <script> //adding a delay function so that the splash screen can 
+//transition into flutter webapp
+    function delay(time) {
+      return new Promise(resolve => setTimeout(resolve, time));
+    }
+
+//add loaderContent variable, run appRunner function after delay
+    window.addEventListener('load', function(ev) {
+      var loaderContent = document.querySelector('#osm-map');
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(async function(appRunner) {
+            loaderContent.style.opacity = "0";
+            await delay(010);
+            await appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script
+
+</body>
+
+</html>
